@@ -1,0 +1,5 @@
+Сделать update и upgrade 
+Установить wireguard 
+Делаем форвардинг (echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf && sysctl -p)
+Копируем конфиг wg0.conf в /etc/wireguard
+Добавляем в автозагрузку и стартуем службу (systemctl enable wg-quick@wg0.service, systemctl start wg-quick@wg0.service) 
