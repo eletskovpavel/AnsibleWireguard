@@ -1,12 +1,32 @@
 ---
 - hosts: "all"
+  vars_files:
+    - ~/ansible/vars.yml
   become: true
   tasks:
-  - name: include vaulted varibles
-    include_vars: ~/ansible/vars.yml
+  - name: Update and upgrade
+    ansible.builtin.apt:
+      upgrade: yes
+      update_cache: yes
+      cache_valid_time: 86400
   - name: install wireguard
     ansible.builtin.apt:
       name: "wireguard"
       state: "latest"
-      update_cache: true
-      
+  - name: Do forwarding
+    shell: echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf  
+  - name: copy configuration
+    copy:
+      src: ~/ansible/wg0.conf
+      dest: /etc/wireguard
+      owner: kami
+      group: kami
+      mode: '0777'
+  - name: enable wireguard
+    ansible.builtin.systemd:
+      name: wg-quick@wg0.service
+      enabled: yes
+  - name: start wireguard
+    ansible.builtin.systemd:
+      name: wg-quick@wg0.service
+      state: started
