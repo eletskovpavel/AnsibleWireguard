@@ -2,8 +2,11 @@
 - hosts: "all"
   become: true
   tasks:
-  - name: "install wireguard"
+  - name: include vaulted varibles
+    include_vars: ~/ansible/vars.yml
+  - name: install wireguard
     ansible.builtin.apt:
       name: "wireguard"
       state: "latest"
       update_cache: true
+      
