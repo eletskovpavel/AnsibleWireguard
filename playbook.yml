@@ -14,7 +14,10 @@
       name: "wireguard"
       state: "latest"
   - name: Do forwarding
-    shell: echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf  
+    shell: echo 'net.ipv4.ip_forward=1' > /etc/sysctl.conf 
+  - name: Apply forwarding 
+    sysctl:
+      reload: yes 
   - name: copy configuration
     copy:
       src: ~/ansible/wg0.conf
