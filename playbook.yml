@@ -26,8 +26,8 @@
     copy:
       src: ~/ansible/wg0.conf
       dest: /etc/wireguard
-      owner: kami
-      group: kami
+      owner: {{ user_name }}
+      group: {{ group_name }}
       mode: '0777'
   - name: enable wireguard
     ansible.builtin.systemd:
